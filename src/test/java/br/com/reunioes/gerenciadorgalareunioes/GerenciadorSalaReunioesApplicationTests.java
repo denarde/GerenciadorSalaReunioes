@@ -1,4 +1,4 @@
-package br.com.reunioes.GerenciadorSalaReunioes;
+package br.com.reunioes.gerenciadorgalareunioes;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
