@@ -26,7 +26,7 @@ public class UsuarioController {
 
         Usuario usr = modelMapper.map(dto,Usuario.class);
         usr = service.save(usr);
-        
+
         return modelMapper.map(usr,UsuarioDTO.class);
     }
 

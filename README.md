@@ -7,3 +7,4 @@ Estudos de Java + Spring Boot
 * JPA
 * Lombok
 * Validation
+* Model Mapper
