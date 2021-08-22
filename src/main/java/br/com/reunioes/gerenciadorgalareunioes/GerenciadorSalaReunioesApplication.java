@@ -19,8 +19,11 @@ public class GerenciadorSalaReunioesApplication {
 	@Bean
 	public SalaMapper salaMapper() { return new SalaMapper(); }
 
-	@Bean
+	@Bean(name="formatHora")
 	public SimpleDateFormat formHora() { return new SimpleDateFormat("HH:mm:ss"); };
+
+	@Bean(name="formatData")
+	public SimpleDateFormat formData() { return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); };
 
 	public static void main(String[] args) {
 		SpringApplication.run(GerenciadorSalaReunioesApplication.class, args);

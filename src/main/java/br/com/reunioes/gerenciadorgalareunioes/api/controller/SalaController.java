@@ -6,6 +6,8 @@ import br.com.reunioes.gerenciadorgalareunioes.mappers.SalaMapper;
 import br.com.reunioes.gerenciadorgalareunioes.model.entity.Sala;
 import br.com.reunioes.gerenciadorgalareunioes.service.SalaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,7 +24,10 @@ public class SalaController {
 
     private final SalaMapper salaMapper;
     private final SalaService service;
-    private final SimpleDateFormat formHora;
+
+    @Autowired
+    @Qualifier("formatHora")
+    private final SimpleDateFormat formatHora;
 
 
     @PostMapping
@@ -56,8 +61,8 @@ public class SalaController {
     @PutMapping("{id}")
     public SalaDTO update(@PathVariable Long id, @RequestBody @Valid SalaDTO dto) throws ParseException {
 
-        Date dateAbertura = formHora.parse(dto.getHorarioAbertura());
-        Date dateFechamento = formHora.parse(dto.getHorarioFechamento());
+        Date dateAbertura = formatHora.parse(dto.getHorarioAbertura());
+        Date dateFechamento = formatHora.parse(dto.getHorarioFechamento());
 
         return service.getById(id).map( sala -> {
 
