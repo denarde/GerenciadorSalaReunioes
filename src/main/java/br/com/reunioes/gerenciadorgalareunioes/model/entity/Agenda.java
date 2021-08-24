@@ -25,11 +25,11 @@ public class Agenda implements Serializable {
     @Column
     private String descricao;
 
-    @Column(name = "HORARIO_ABERTURA")
+    @Column(name = "INICIO_REUNIAO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date inico;
 
-    @Column(name = "HORARIO_FECHAMENTO")
+    @Column(name = "FIM_REUNIAO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fim;
 

@@ -5,6 +5,7 @@ import br.com.reunioes.gerenciadorgalareunioes.model.entity.Agenda;
 import br.com.reunioes.gerenciadorgalareunioes.model.entity.Sala;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.Optional;
 
 public interface AgendaService {
@@ -15,5 +16,4 @@ public interface AgendaService {
 
     void delete(Agenda agenda);
 
-    Agenda update(Agenda agenda);
 }

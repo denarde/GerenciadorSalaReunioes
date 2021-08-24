@@ -6,8 +6,12 @@ import br.com.reunioes.gerenciadorgalareunioes.model.repository.SalaRepository;
 import br.com.reunioes.gerenciadorgalareunioes.service.SalaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -17,6 +21,13 @@ public class SalaServiceImpl implements SalaService {
     @Autowired
     private SalaRepository repository;
 
+    @Autowired
+    @Qualifier("formatHora")
+    private final SimpleDateFormat formatHora;
+
+    @Autowired
+    @Qualifier("formatData")
+    private final SimpleDateFormat formatData;
 
     @Override
     public Sala save(Sala sala) {
@@ -39,6 +50,23 @@ public class SalaServiceImpl implements SalaService {
     public Sala update(Sala sala) {
 
         return repository.save(sala);
+
+    }
+
+    @Override
+    public Boolean isCapacidade(Integer participantes, Long id) {
+
+        return repository.validaCapacidade(participantes, id);
+    }
+
+    @Override
+    public Boolean isHorarioPermitido(Date inicio, Date fim, Sala sala) throws ParseException {
+
+        if(sala.getHorarioAbertura().getHours() <= inicio.getHours() &&
+                sala.getHorarioFechamento().getHours() >=  fim.getHours()){
+            return true;
+        }
+        return false;
 
     }
 
