@@ -12,7 +12,9 @@ import br.com.reunioes.gerenciadorgalareunioes.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,14 +35,19 @@ public class AgendaServiceImpl implements AgendaService {
 
     @Override
     public Agenda agendar(AgendaDTO dto) throws ParseException {
-        if(!salaService.isCapacidade(dto.getQtdParticipantes(), dto.getSala())){
-            throw new BusinessException("Quantidade de participantes maior do que o permitido");
-        }
 
-        Sala sala = salaService.getById(dto.getSala()).get();
-        Usuario usuario = usuarioService.getById(dto.getUsuario()).get();
+
+        Sala sala = salaService.getById(dto.getSala()).orElseThrow(() ->
+                new BusinessException("Sala não encontrada"));
+        Usuario usuario = usuarioService.getById(dto.getUsuario()).orElseThrow(() ->
+                new BusinessException("Usuario não encontrado"));
+
         Date dateInicio = formatData.parse(dto.getInicio());
         Date dateFim = formatData.parse(dto.getFim());
+
+        if(!salaService.isCapacidade(dto.getQtdParticipantes(), sala.getId())){
+            throw new BusinessException("Quantidade de participantes maior do que o permitido");
+        }
 
         if(dateInicio.getDay() != dateFim.getDay()){
             throw new BusinessException("Agenda não permitida para dias diferentes");
@@ -50,13 +57,16 @@ public class AgendaServiceImpl implements AgendaService {
             throw new BusinessException("Agenda fora do horario de atendimento da Sala");
         }
 
-        if(dateFim.getDay() < dateInicio.getDay()){
-            throw new BusinessException("Data fim não pode ser menor que a data de inicio");
+        if(dateFim.getHours() < dateInicio.getHours()){
+            throw new BusinessException("Horario de fim não pode ser menor que o horario de inicio");
         }
 
         if(!isHorarioDisponivel(dateInicio, dateFim, sala.getId())){
             throw new BusinessException("Horario indisponivel para agendamento");
         }
+
+
+
 
         Agenda agenda = Agenda.builder()
                                 .descricao(dto.getDescricao())
