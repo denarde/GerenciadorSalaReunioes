@@ -8,3 +8,4 @@ Estudos de Java + Spring Boot
 * Lombok
 * Validation
 * Model Mapper
+* Documentação Swagger
